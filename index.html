@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ritual Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #58a6ff;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #161b22;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #238636;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2ea043;
+    }
+    .correct { color: #3fb950; font-weight: bold; }
+    .wrong { color: #f85149; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Ritual Blockchain Quiz</h1>
+  <div id="quiz"></div>
+  <button onclick="submitQuiz()">Submit Quiz</button>
+  <h2 id="result"></h2>
+
+  <script>
+    const quizData = [
+      {
+        question: "What is the main vision of the Ritual blockchain?",
+        options: ["To only provide faster transactions", "To only build an AI marketplace", "To unlock new trustless behaviors for on-chain users", "To replace Bitcoin"],
+        answer: 2
+      },
+      {
+        question: "What role does Resonance play in Ritual?",
+        options: ["It is a storage system", "It is an AI training engine", "It balances transaction fees through supply-demand matching", "It is a staking tool for validators"],
+        answer: 2
+      },
+      {
+        question: "Which of the following innovations are introduced by Ritual?",
+        options: ["Enshrined On-Chain AI Models", "Scheduled Transactions", "Native Account Abstraction", "All of the above"],
+        answer: 3
+      },
+      {
+        question: "Why does Ritual argue that AI should be on-chain?",
+        options: ["To reduce gas fees for inference", "For transparency, censorship resistance, and open access", "To simplify enterprise-only use cases", "For gaming purposes only"],
+        answer: 1
+      },
+      {
+        question: "What does EVM++ Extensions mean in Ritual?",
+        options: ["A completely separate blockchain from Ethereum", "A hardware extension for nodes", "Direct integration of in-demand Ethereum Improvement Proposals (EIPs)", "Blocking smart contracts"],
+        answer: 2
+      },
+      {
+        question: "What does the feature Scheduled Transactions provide in Ritual?",
+        options: ["Auto-deletion of transaction history", "Recurring and conditional transactions without external keepers", "Faster token staking", "Cross-chain swaps"],
+        answer: 1
+      }
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+
+    quizData.forEach((q, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<p><b>Q${index + 1}. ${q.question}</b></p>` +
+        q.options.map((opt, i) =>
+          `<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`
+        ).join("");
+      quizContainer.appendChild(div);
+    });
+
+    function submitQuiz() {
+      let score = 0;
+      quizData.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        const options = document.getElementsByName(`q${index}`);
+        options.forEach((opt, i) => {
+          const label = opt.parentNode;
+          label.classList.remove("correct", "wrong");
+          if (i === q.answer) {
+            label.classList.add("correct");
+          }
+          if (selected && parseInt(selected.value) === i && i !== q.answer) {
+            label.classList.add("wrong");
+          }
+        });
+        if (selected && parseInt(selected.value) === q.answer) {
+          score++;
+        }
+      });
+      document.getElementById("result").innerHTML = `You scored ${score} / ${quizData.length}`;
+    }
+  </script>
+</body>
+</html>
